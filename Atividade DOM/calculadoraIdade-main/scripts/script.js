@@ -43,7 +43,8 @@ function calcular(event) {
     console.log(mesAtual)
     console.log(diaAtual)
 
-    let idade = calcularIdade(usuario._anoNascimento, anoAtual)
+    let idade = calcularIdade(usuario._diaNascimento, usuario._mesNascimento, usuario._anoNascimento, diaAtual, mesAtual, anoAtual)
+
     let classificacao = classificarIdade(idade)
 
     usuario = organizarDados(usuario, idade, classificacao)
@@ -52,7 +53,7 @@ function calcular(event) {
 
     window.location.reload()
 
-    console.log(usuario )
+    console.log(usuario)
     
 }
 
@@ -63,14 +64,17 @@ function calcular(event) {
 //     // console.log(dataDividida)
 // }
 
-// function calcularIdade(diaNasc, mesNasc, anoNasc, diaAt, mesAt, anoAt) {
-function calcularIdade(anoNasc, anoAt) {
 
-    // let diaIdade = diaNasc - diaAt
-    // let mesIdade = mesNasc - mesAt
+function calcularIdade(diaNasc, mesNasc, anoNasc, diaAt, mesAt, anoAt) {
+
     let anoIdade = anoAt - anoNasc
-    console.log(`Idade: ${anoIdade}`)
+    let mesIdade = mesAt - mesNasc
+    
 
+    if ( mesIdade < 0 || ( mesIdade === 0 && diaAt < diaNasc ) ) {
+        anoIdade--;
+    }
+    console.log(`Idade: ${anoIdade}`)
     return anoIdade
 
 }
@@ -164,9 +168,9 @@ function mostrarUsuarios(listaUsuarios) {
     listaUsuarios.forEach(usuario => {
         template += `<tr>
                         <td data-cell="nome">${usuario._nome}</td>
-                        <td data-cell="data de nascimento">${usuario.dataNasc}</td>
-                        <td data-cell="idade">${usuario.idade}</td>
-                        <td data-cell="faixa etária">${usuario.classificacao}</td>
+                        <td data-cell="data de nascimento">${usuario._diaNascimento}/${usuario._mesNascimento}/${usuario._anoNascimento}</td>
+                        <td data-cell="idade">${usuario._idade}</td>
+                        <td data-cell="faixa etária">${usuario._classificacao}</td>
                     </tr>  `
     })
 
